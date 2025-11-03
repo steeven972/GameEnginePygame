@@ -1,0 +1,55 @@
+import pygame as pg
+from .movements import Movements
+from .physics import Gravity
+class RenderSys:
+    def __init__(self, screen, bg_color, sprites):
+        self.screen = screen
+        self.bg_color = bg_color
+        self.sprites = sprites
+        self.move = Movements()
+        self.gravity = Gravity()
+
+    def clear(self):
+        """Efface l’écran avec la couleur de fond."""
+        self.screen.fill(self.bg_color)
+
+    def draw_game(self, dt):
+        """Rendu de la scène de jeu (avec les entités et mouvements)."""
+        self.clear()
+
+        # Gérer les mouvements
+        for entity in self.sprites:
+
+            is_character =getattr(entity, "character", False)
+            is_rigid =getattr(entity, "rigid", False)
+
+            if is_rigid:
+                self.gravity.update(entity)
+
+            if is_character:  # sécurité
+                self.move.handle_input(self.screen, entity, dt)
+                
+           
+
+        # Mettre à jour les sprites et les dessiner
+        self.sprites.update()
+        self.sprites.draw(self.screen)
+
+    def draw_menu(self):
+        """Rendu du menu principal."""
+        self.clear()
+        font = pg.font.SysFont(None, 50)
+        text_surface = font.render("Press ENTER to start", True, (255, 255, 255))
+        self.screen.blit(text_surface, (100, 200))
+
+    def draw_scene(self, scene_type: str, dt=0):
+        """
+        Permet de choisir dynamiquement le rendu selon la scène active.
+        Exemple : render.draw_scene("menu") ou render.draw_scene("game", dt)
+        """
+        if scene_type == "menu":
+            self.draw_menu()
+        elif scene_type == "game":
+            self.draw_game(dt)
+        else:
+            raise ValueError(f"Unknown scene type: {scene_type}")
