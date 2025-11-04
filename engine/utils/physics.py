@@ -1,5 +1,3 @@
-import pygame as pg
-
 class Gravity:
     def __init__(self):
         self.gravity = 0.05
@@ -13,5 +11,4 @@ class Gravity:
         entity.x += self.speedX
         entity.y += self.speedY + self.gravitySpeed
         entity.update_rect()
-        print(f"x: {entity.x:.2f} | y: {entity.y:.2f}")
 

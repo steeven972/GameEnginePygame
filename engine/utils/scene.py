@@ -6,9 +6,9 @@ from .entity import Entity
 class Scene:
     def __init__(self, engine):
         self.engine = engine   
-        self.render = RenderSys(engine.screen, engine.bg_color, engine.all_sprites)
+        self.render = RenderSys(engine)
 
-    def create_entity(self, filePath, pos: tuple) -> Entity:
+    def create_entity(self, filePath:str, pos: tuple) -> Entity:
         try:
             file = filePath.split("/")[-1]
             name, _ = file.split(".")
@@ -19,13 +19,3 @@ class Scene:
         except Exception as e:
             print(f"[FATAL] Failed to create entity : {name} error : {e}")
             return None
-
-'''class gameScene(Scene):
-    def __init__(self, engine):
-        super().__init__(engine)
-        self.render.draw_game()
-
-class MenuScene(Scene):
-    def __init__(self, engine):
-        super().__init__(engine)
-        self.render.draw_menu()'''
