@@ -12,10 +12,12 @@ class Scene:
         try:
             file = filePath.split("/")[-1]
             name, _ = file.split(".")
-            entity = Entity(name,self.engine.rm.get_image(file), pos)
+            entity = Entity(name,image=self.engine.rm.get_image(file), pos=pos)
             self.engine.entities[name] = entity
             self.engine.all_sprites.add(entity)
             return entity
         except Exception as e:
+            import traceback
             print(f"[FATAL] Failed to create entity : {name} error : {e}")
+            traceback.print_exc()
             return None

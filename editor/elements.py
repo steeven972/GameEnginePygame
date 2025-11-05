@@ -26,7 +26,7 @@ class Elements:
         return self.relative_rect.center
 class UIButton(Elements):
     def __init__(self, pos: tuple, size:tuple, text:str, color: tuple, ft_size:int, bg_color:tuple, ft_family:str = 'Arial', border_radius=0):
-        super().__init__(pos, size, text, color,ft_size, bg_color, ft_family, border_radius)
+        super(UIButton, self).__init__(pos, size, text, color,ft_size, bg_color, ft_family, border_radius)
         self.hover = tuple(min(255, max(0, x - 50)) for x in self.bg_color)
         self.relative_rect = pg.Rect(pos, size)
         self.text = text

@@ -11,12 +11,11 @@ if __name__ == "__main__":
     scene = app.scene
     player = scene.create_entity("Pouch.png", (WIDTH // 2, HEIGHT // 2))
     atrox = scene.create_entity("Atrox.png", (200, 200))
-
-    
    
     if player:
         player.is_character(True)
         player.is_rigidBody(True)
+        player.visible = False
 
     app.mainloop()
     app.stop()

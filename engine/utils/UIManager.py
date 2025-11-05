@@ -13,5 +13,3 @@ class UIManager:
         for w in self.widgets:
             w.draw(surface)
 
-def start_game():
-    print("Game started!")

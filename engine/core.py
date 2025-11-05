@@ -5,30 +5,34 @@ from .utils.scene import Scene
 from .utils.input import inputManager
 from .utils.UIManager import UIManager
 from editor.elements import UIButton
+
 class Engine:
     def __init__(self, width: int, height: int, fps: int):
-        pg.init()
-        
+
         self.width = width
         self.height = height
         self.fps = fps
-        self.rm = RessourceManager()
-        self.entities = {}
-        self.all_sprites = pg.sprite.Group()
-
-        
-        self.screen = pg.display.set_mode((width, height))
-        self.bg_color = (0, 0, 0)
-        
-        self.clock = pg.time.Clock()
         self.running = True
+
+        pg.init()
+
+        self.screen = pg.display.set_mode((width, height))
+        pg.display.set_caption("Game engine")
+        self.bg_color = (30, 30, 30)
+        self.clock = pg.time.Clock()
+
+        self.rm = RessourceManager()
         self.scene = Scene(self)
         self.input = inputManager(self)
-        self.scene_type = "initProject"
         self.render = RenderSys(self)
-     
         self.ui = UIManager()
-        self.button = UIButton((200, 100), (100, 60), "Start Game", (0, 0, 0), 16, (255, 0, 0))
+
+        self.all_sprites = pg.sprite.Group()
+        self.entities = {}
+        self.scene_type = "initProject"
+
+        
+        self.button = UIButton((0,0), (100, 60), "Start Game", (0, 0, 0), 16, (255, 0, 0))
         self.ui.add(self.button)
 
        
@@ -38,17 +42,18 @@ class Engine:
     def start_game(self):
         self.scene_type = "game"
         print("hello")
+
     def mainloop(self):
         try:
             while self.running:
                 self.tick = self.clock.tick(self.fps)
                 dt = self.tick /1000.0
                 self.scene.render.clear()
-                events = pg.event.get()
-                self.input.handle_events(events)
 
-                for e in events:
+                for e in pg.event.get():
+                    self.input.handle_events(e)
                     self.button.onClick(e, self.start_game)
+              
                 if self.scene_type == "initProject":
                     self.ui.draw(self.screen)
                 else:
@@ -57,14 +62,12 @@ class Engine:
                 pg.display.update()
 
         except Exception as e:
-            print(f"[FATAL] Error in mainloop : {e}")
+            import traceback
+            print("[FATAL] Error in mainloop:")
+            traceback.print_exc()
+
         finally:
             pg.quit()   
-
-    def handle_events(self):
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                self.running = False
 
     def stop(self):
         pg.quit()
